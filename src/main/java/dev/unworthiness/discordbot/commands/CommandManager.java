@@ -1,6 +1,7 @@
 package dev.unworthiness.discordbot.commands;
 
 import dev.unworthiness.discordbot.Config;
+import dev.unworthiness.discordbot.commands.cmds.GCommand;
 import dev.unworthiness.discordbot.commands.cmds.PingCommand;
 import dev.unworthiness.discordbot.commands.cmds.ShutdownCommand;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class CommandManager {
   public CommandManager() {
     addCommand(new PingCommand());
     addCommand(new ShutdownCommand());
+    addCommand(new GCommand());
   }
 
   private void addCommand(ICommand cmd) {
@@ -49,7 +51,6 @@ public class CommandManager {
 
     // assume rest of message is arguments
     if (cmd != null) {
-      event.getChannel().sendTyping().queue();
       List<String> args = Arrays.asList(split).subList(1, split.length);
       CommandContext context = new CommandContext(event, args);
       cmd.handle(context);
