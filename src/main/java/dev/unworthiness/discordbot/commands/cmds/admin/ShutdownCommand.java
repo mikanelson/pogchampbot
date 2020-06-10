@@ -1,4 +1,4 @@
-package dev.unworthiness.discordbot.commands.cmds;
+package dev.unworthiness.discordbot.commands.cmds.admin;
 
 import dev.unworthiness.discordbot.Listener;
 import dev.unworthiness.discordbot.commands.CommandContext;

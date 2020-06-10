@@ -1,10 +1,10 @@
 package dev.unworthiness.discordbot.commands;
 
-import dev.unworthiness.discordbot.Config;
 import dev.unworthiness.discordbot.commands.cmds.GCommand;
 import dev.unworthiness.discordbot.commands.cmds.HelpCommand;
 import dev.unworthiness.discordbot.commands.cmds.PingCommand;
-import dev.unworthiness.discordbot.commands.cmds.ShutdownCommand;
+import dev.unworthiness.discordbot.commands.cmds.admin.SetPrefixCommand;
+import dev.unworthiness.discordbot.commands.cmds.admin.ShutdownCommand;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,6 +20,7 @@ public class CommandManager {
     addCommand(new ShutdownCommand());
     addCommand(new GCommand());
     addCommand(new HelpCommand(this));
+    addCommand(new SetPrefixCommand());
   }
 
   private void addCommand(ICommand cmd) {
@@ -45,10 +46,10 @@ public class CommandManager {
     return commands;
   }
 
-  public void handle(GuildMessageReceivedEvent event) {
+  public void handle(GuildMessageReceivedEvent event, String prefix) {
     String[] split =
         event.getMessage().getContentRaw()
-            .replaceFirst("(?i)" + Pattern.quote(Config.get("prefix")), "")
+            .replaceFirst("(?i)" + Pattern.quote(prefix), "")
             .split("\\s+");
 
     // get command name

@@ -1,6 +1,7 @@
 package dev.unworthiness.discordbot.commands.cmds;
 
 import dev.unworthiness.discordbot.Config;
+import dev.unworthiness.discordbot.PrefixHandler;
 import dev.unworthiness.discordbot.commands.CommandContext;
 import dev.unworthiness.discordbot.commands.CommandManager;
 import dev.unworthiness.discordbot.commands.ICommand;
@@ -19,13 +20,14 @@ public class HelpCommand implements ICommand {
   public void handle(CommandContext ctx) {
     List<String> args = ctx.getArgs();
     TextChannel channel = ctx.getChannel();
+    String prefix = PrefixHandler.PREFIXES.get(ctx.getGuild().getIdLong());
     // generic help command
     if (args.isEmpty()) {
       StringBuilder builder = new StringBuilder();
       builder.append("Commands: \n");
       // pull name for each command and add to string builder
       manager.getCommands().stream().map(ICommand::getName).forEach(
-          (cmd) -> builder.append('`').append(Config.get("prefix")).append(cmd).append("`\n")
+          (cmd) -> builder.append('`').append(prefix).append(cmd).append("`\n")
       );
       // send results
       channel.sendMessage(builder.toString()).queue();
