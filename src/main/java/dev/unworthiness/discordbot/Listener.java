@@ -1,5 +1,6 @@
 package dev.unworthiness.discordbot;
 
+import dev.unworthiness.discordbot.commands.CommandManager;
 import javax.annotation.Nonnull;
 import me.duncte123.botcommons.BotCommons;
 import net.dv8tion.jda.api.Permission;
@@ -7,7 +8,6 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.ReadyEvent;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.slf4j.Logger;
@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 
 public class Listener  extends ListenerAdapter {
   private static Logger LOGGER = LoggerFactory.getLogger(Listener.class);
+
+  private CommandManager manager = new CommandManager();
 
   @Override
   public void onReady(@Nonnull ReadyEvent event) {
@@ -25,9 +27,10 @@ public class Listener  extends ListenerAdapter {
   public void onGuildMessageReceived(@Nonnull GuildMessageReceivedEvent event) {
     // ignore bot messages
     User author = event.getAuthor();
-    if (author.isBot()) {
+    if (author.isBot() || event.isWebhookMessage()) {
       return;
     }
+
     String prefix = Config.get("prefix");
     String message = event.getMessage().getContentRaw();
     Member member = event.getGuild().getMember(author);
@@ -44,14 +47,11 @@ public class Listener  extends ListenerAdapter {
         TextChannel channel = event.getMessage().getTextChannel();
         channel.sendMessage("no u, <@" + author.getId() + ">").queue();
       }
-    }
-  }
-
-  @Override
-  public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
-    // ignore bot messages
-    if (event.getAuthor().isBot()) {
       return;
+    }
+
+    if (message.startsWith(prefix)) {
+      manager.handle(event);
     }
   }
 }
