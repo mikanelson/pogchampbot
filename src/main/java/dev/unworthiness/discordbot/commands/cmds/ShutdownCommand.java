@@ -36,13 +36,17 @@ public class ShutdownCommand implements ICommand {
   }
 
   @Override
+  public String getHelp() {
+    return "Shuts down bot - Requires Administrator";
+  }
+
+  @Override
   public String getName() {
     return "shutdown";
   }
 
   @Override
   public List<String> getAliases() {
-    List<String> aliases = Arrays.asList("shutdown", "quit");
-    return aliases;
+    return Arrays.asList("shutdown", "quit");
   }
 }

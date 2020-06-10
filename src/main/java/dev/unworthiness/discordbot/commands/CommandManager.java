@@ -2,6 +2,7 @@ package dev.unworthiness.discordbot.commands;
 
 import dev.unworthiness.discordbot.Config;
 import dev.unworthiness.discordbot.commands.cmds.GCommand;
+import dev.unworthiness.discordbot.commands.cmds.HelpCommand;
 import dev.unworthiness.discordbot.commands.cmds.PingCommand;
 import dev.unworthiness.discordbot.commands.cmds.ShutdownCommand;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class CommandManager {
     addCommand(new PingCommand());
     addCommand(new ShutdownCommand());
     addCommand(new GCommand());
+    addCommand(new HelpCommand(this));
   }
 
   private void addCommand(ICommand cmd) {
@@ -30,13 +32,17 @@ public class CommandManager {
   }
 
   @Nullable
-  private ICommand getCommand(String cmdName) {
+  public ICommand getCommand(String cmdName) {
     for (ICommand command : this.commands) {
       if (command.getName().equalsIgnoreCase(cmdName) || command.getAliases().contains(cmdName.toLowerCase())) {
         return command;
       }
     }
     return null;
+  }
+
+  public List<ICommand> getCommands() {
+    return commands;
   }
 
   public void handle(GuildMessageReceivedEvent event) {

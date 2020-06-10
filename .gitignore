@@ -49,3 +49,6 @@ hs_err_pid*
 src/main/resources/logback.xml
 
 src/main/java/dev/unworthiness/discordbot/commands/cmds/GCommand.java
+
+database.db
+out/production/classes/META-INF/jtdiscordbot.main.kotlin_module
