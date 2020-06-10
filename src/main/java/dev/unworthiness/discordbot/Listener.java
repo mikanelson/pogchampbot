@@ -2,10 +2,6 @@ package dev.unworthiness.discordbot;
 
 import dev.unworthiness.discordbot.commands.CommandManager;
 import javax.annotation.Nonnull;
-import me.duncte123.botcommons.BotCommons;
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -33,23 +29,6 @@ public class Listener  extends ListenerAdapter {
 
     String prefix = Config.get("prefix");
     String message = event.getMessage().getContentRaw();
-    Member member = event.getGuild().getMember(author);
-    if (message.equalsIgnoreCase(prefix + " shutdown")) {
-      if (member.hasPermission(Permission.ADMINISTRATOR)) {
-        // shut bot down
-        LOGGER.info("Bot shut down by {}, ID: {}", author.getAsTag(), author.getIdLong());
-        event.getJDA().shutdown();
-        BotCommons.shutdown(event.getJDA());
-      } else {
-        // log attempted shut down by unauthorized user
-        LOGGER.info("Attempted shutdown by {}, ID: {}", author.getAsTag(), author.getIdLong());
-        // inform user
-        TextChannel channel = event.getMessage().getTextChannel();
-        channel.sendMessage("no u, <@" + author.getId() + ">").queue();
-      }
-      return;
-    }
-
     if (message.startsWith(prefix)) {
       manager.handle(event);
     }
