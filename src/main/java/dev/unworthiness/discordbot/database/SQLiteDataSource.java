@@ -39,13 +39,27 @@ public class SQLiteDataSource {
     // create data source
     ds = new HikariDataSource(config);
     String prefix = Config.get("prefix");
+    // create table for settings of bot
     try (Statement statement = getConnection().createStatement()) {
       // language=SQLite
       statement.execute("CREATE TABLE IF NOT EXISTS guild_settings "
           + "(id INTEGER PRIMARY KEY AUTOINCREMENT,"
           + "guild_id VARCHAR(20) NOT NULL,"
           + "prefix VARCHAR(255) NOT NULL DEFAULT '" + prefix + "');");
-      LOGGER.info("Table initialized.");
+      LOGGER.info("Guild Settings table initialized.");
+    } catch (SQLException s) {
+      s.printStackTrace();
+    }
+    // create table for economy portion of bot
+    try (Statement statement = getConnection().createStatement()) {
+      // language=SQLite
+      statement.execute("CREATE TABLE IF NOT EXISTS economy "
+          + "(id INTEGER PRIMARY KEY AUTOINCREMENT,"
+          + "guild_id VARCHAR(20) NOT NULL,"
+          + "user_id VARCHAR(255) NOT NULL,"
+          + "pogchamps REAL NOT NULL DEFAULT 5.0,"
+          + "weirdchamps REAL NOT NULL DEFAULT 5.0);");
+      LOGGER.info("Economy table initialized.");
     } catch (SQLException s) {
       s.printStackTrace();
     }

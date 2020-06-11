@@ -30,9 +30,6 @@ public class Listener  extends ListenerAdapter {
     if (author.isBot() || event.isWebhookMessage()) {
       return;
     }
-    /*
-    String prefix = Config.get("prefix");
-     */
     long guildId = event.getGuild().getIdLong();
     String prefix = PrefixHandler.PREFIXES.computeIfAbsent(guildId, this::getPrefix);
     String message = event.getMessage().getContentRaw();
