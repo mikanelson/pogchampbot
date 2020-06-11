@@ -21,7 +21,7 @@ public class MugCommand implements ICommand {
     String authorId = ctx.getAuthor().getId();
     String victimId = ctx.getMessage().getMentionedMembers().get(0).getId();
     TextChannel channel = ctx.getChannel();
-    if (authorId.equalsIgnoreCase(victimId)) {
+    if (authorId.equals(victimId)) {
       channel.sendMessage("You can't mug yourself").queue();
       return;
     }
@@ -66,12 +66,12 @@ public class MugCommand implements ICommand {
     } catch (SQLException e) {
       e.printStackTrace();
     }
+    double pogchamps = 0.0;
     try (PreparedStatement statement = connection
         // language=SQLite
         .prepareStatement("SELECT pogchamps FROM economy WHERE guild_id = ? AND user_id = ?")) {
       statement.setString(1, guildId);
       statement.setString(2, userId);
-      double pogchamps = 0.0;
       try (ResultSet set = statement.executeQuery()) {
         if (set.next()) {
           pogchamps = Double.valueOf(set.getString("pogchamps"));
@@ -79,11 +79,10 @@ public class MugCommand implements ICommand {
       }
       statement.closeOnCompletion();
       connection.close();
-      return pogchamps;
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    return 0.0;
+    return pogchamps;
   }
 
   private void changeBalance(String guildId, String userId, double amount) {
