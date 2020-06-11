@@ -6,6 +6,7 @@ import dev.unworthiness.discordbot.commands.cmds.PingCommand;
 import dev.unworthiness.discordbot.commands.cmds.admin.SetPrefixCommand;
 import dev.unworthiness.discordbot.commands.cmds.admin.ShutdownCommand;
 import dev.unworthiness.discordbot.commands.cmds.economy.BalanceCommand;
+import dev.unworthiness.discordbot.commands.cmds.economy.MugCommand;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,6 +24,7 @@ public class CommandManager {
     addCommand(new HelpCommand(this));
     addCommand(new SetPrefixCommand());
     addCommand(new BalanceCommand());
+    addCommand(new MugCommand());
   }
 
   private void addCommand(ICommand cmd) {

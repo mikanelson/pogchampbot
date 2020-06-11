@@ -4,6 +4,7 @@ import dev.unworthiness.discordbot.PrefixHandler;
 import dev.unworthiness.discordbot.commands.CommandContext;
 import dev.unworthiness.discordbot.commands.ICommand;
 import dev.unworthiness.discordbot.database.SQLiteDataSource;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
@@ -42,12 +43,20 @@ public class SetPrefixCommand implements ICommand {
 
   private void updatePrefix(long guildId, String newPrefix) {
     PrefixHandler.PREFIXES.put(guildId, newPrefix);
-    try (PreparedStatement statement = SQLiteDataSource.getConnection()
+    Connection connection = null;
+    try {
+      connection = SQLiteDataSource.getConnection();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    try (PreparedStatement statement = connection
         // language=SQLite
         .prepareStatement("UPDATE guild_settings SET prefix = ? WHERE guild_id = ?")) {
       statement.setString(1, newPrefix);
       statement.setString(2, String.valueOf(guildId));
       statement.executeUpdate();
+      statement.closeOnCompletion();
+      connection.close();
     } catch (SQLException e) {
       e.printStackTrace();
     }

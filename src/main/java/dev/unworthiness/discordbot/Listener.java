@@ -2,6 +2,7 @@ package dev.unworthiness.discordbot;
 
 import dev.unworthiness.discordbot.commands.CommandManager;
 import dev.unworthiness.discordbot.database.SQLiteDataSource;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,7 +40,13 @@ public class Listener  extends ListenerAdapter {
   }
 
   private String getPrefix(long guildId) {
-    try (PreparedStatement statement = SQLiteDataSource.getConnection()
+    Connection connection = null;
+    try {
+      connection = SQLiteDataSource.getConnection();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    try (PreparedStatement statement = connection
         // language=SQLite
         .prepareStatement("SELECT prefix FROM guild_settings WHERE guild_id = ?")) {
       statement.setString(1, String.valueOf(guildId));
@@ -48,12 +55,15 @@ public class Listener  extends ListenerAdapter {
           return set.getString("prefix");
         }
       }
-      try (PreparedStatement insert = SQLiteDataSource.getConnection()
+      statement.closeOnCompletion();
+      try (PreparedStatement insert = connection
           // language=SQLite
           .prepareStatement("INSERT INTO guild_settings (guild_id) VALUES (?)")) {
         insert.setString(1, String.valueOf(guildId));
         insert.execute();
+        insert.closeOnCompletion();
       }
+      connection.close();
     } catch (SQLException e) {
       e.printStackTrace();
     }
