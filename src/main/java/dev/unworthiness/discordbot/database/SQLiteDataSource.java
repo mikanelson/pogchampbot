@@ -51,7 +51,9 @@ public class SQLiteDataSource {
       statement.execute("CREATE TABLE IF NOT EXISTS guild_settings "
           + "(id INTEGER PRIMARY KEY AUTOINCREMENT,"
           + "guild_id VARCHAR(20) NOT NULL,"
-          + "prefix VARCHAR(255) NOT NULL DEFAULT '" + prefix + "');");
+          + "prefix VARCHAR(255) NOT NULL DEFAULT '" + prefix + "',"
+          + "mug_victim_cd INTEGER NOT NULL DEFAULT 10800,"
+          + "mug_other_cd INTEGER NOT NULL DEFAULT 10800);");
       LOGGER.info("Guild Settings table initialized.");
       statement.closeOnCompletion();
     } catch (SQLException s) {
@@ -65,7 +67,9 @@ public class SQLiteDataSource {
           + "guild_id VARCHAR(20) NOT NULL,"
           + "user_id VARCHAR(255) NOT NULL,"
           + "pogchamps REAL NOT NULL DEFAULT 5.0,"
-          + "weirdchamps REAL NOT NULL DEFAULT 5.0);");
+          + "weirdchamps REAL NOT NULL DEFAULT 5.0,"
+          + "mugged_when INTEGER NOT NULL DEFAULT 0,"
+          + "mugged_other_when INTEGER NOT NULL DEFAULT 0);");
       statement.closeOnCompletion();
       connection.close();
       LOGGER.info("Economy table initialized.");

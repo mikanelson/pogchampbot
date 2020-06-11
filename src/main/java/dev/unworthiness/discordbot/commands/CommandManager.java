@@ -7,6 +7,8 @@ import dev.unworthiness.discordbot.commands.cmds.admin.SetPrefixCommand;
 import dev.unworthiness.discordbot.commands.cmds.admin.ShutdownCommand;
 import dev.unworthiness.discordbot.commands.cmds.economy.BalanceCommand;
 import dev.unworthiness.discordbot.commands.cmds.economy.MugCommand;
+import dev.unworthiness.discordbot.commands.cmds.economy.admin.SetGetMuggedCdCommand;
+import dev.unworthiness.discordbot.commands.cmds.economy.admin.SetMugOthersCdCommand;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,6 +27,8 @@ public class CommandManager {
     addCommand(new SetPrefixCommand());
     addCommand(new BalanceCommand());
     addCommand(new MugCommand());
+    addCommand(new SetGetMuggedCdCommand());
+    addCommand(new SetMugOthersCdCommand());
   }
 
   private void addCommand(ICommand cmd) {

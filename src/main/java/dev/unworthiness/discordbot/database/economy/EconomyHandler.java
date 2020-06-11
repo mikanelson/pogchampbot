@@ -5,10 +5,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class EconomyHandler {
+  public static Map<Long, Long> MUG_OTHER_COOLDOWNS = new HashMap<>();
+  public static Map<Long, Long> MUG_VICTIM_COOLDOWNS = new HashMap<>();
   private static Logger LOGGER = LoggerFactory.getLogger(SQLiteDataSource.class);
 
   public void validateUser(String guildId, String userId) {
