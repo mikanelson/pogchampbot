@@ -44,10 +44,12 @@ public class MugCommand implements ICommand {
     int roll = rng.nextInt(1000);
     if (roll <= 600) {
       executeMugging(guildId, authorId, victimId, channel);
+      channel.sendMessage("Successful mugging").queue();
     } else if (roll > 600 && roll <= 900) {
       channel.sendMessage("Nothing happened").queue();
     } else {
       executeMugging(guildId, victimId, authorId, channel);
+      channel.sendMessage("They mugged you instead :(").queue();
     }
   }
 
@@ -56,6 +58,7 @@ public class MugCommand implements ICommand {
     if (pogchamps > 0) {
       return true;
     }
+
     return false;
   }
 
